@@ -1,112 +1,182 @@
 # ATS Resume Analyzer
 
-A free, production-ready ATS Resume Analyzer built with Node.js, Express, and vanilla HTML/CSS/JS. **No AI APIs. No paid services. No data stored.** Completely rule-based keyword matching, section detection, and content quality analysis.
+A free ATS (Applicant Tracking System) Resume Analyzer that helps job seekers evaluate how well their resume matches a target role.
 
-## Project Structure
+Upload your PDF resume, select a job role, and receive an ATS compatibility score based on keyword matching, resume structure detection, and content quality analysis.
 
-```
-ats-resume-analyzer/
-├── api/
-│   └── analyze.js          # Vercel serverless function (POST /api/analyze)
-├── lib/
-│   ├── atsScorer.js        # ATS scoring engine (60/20/20 weighted)
-│   ├── keywords.js         # Keyword sets for 5 roles (30-40 keywords each)
-│   └── pdfParser.js        # PDF text extraction wrapper (pdf-parse)
-├── public/
-│   ├── index.html          # Single-page frontend
-│   ├── css/style.css       # Dark glassmorphism UI
-│   └── js/app.js           # Frontend JS (drag-drop, fetch, render)
-├── server.js               # Local Express dev server
-├── package.json
-├── vercel.json             # Vercel deployment config
-└── README.md
-```
+## Live Demo
 
-## ATS Scoring Logic
+https://ats-resume-builder-7wth.vercel.app/
 
-| Component | Weight | Method |
-|-----------|--------|--------|
-| Keyword Match | **60%** | Word-boundary regex against 30-40 role keywords |
-| Resume Structure | **20%** | Detects 5 sections: Skills, Experience, Education, Projects, Certifications |
-| Content Quality | **20%** | Word count + action verbs + quantified achievements + tech mentions |
+## Features
 
-**Score Bands:** 0-40 Poor · 41-60 Average · 61-80 Good · 81-100 Excellent
+### Resume Analysis
 
-## API Response Format
+* Upload PDF resumes
+* Instant ATS score generation
+* Role-based analysis
 
-```json
-{
-  "success": true,
-  "data": {
-    "score": 85,
-    "grade": "Excellent",
-    "keywordMatch": 80,
-    "structureScore": 100,
-    "contentScore": 75,
-    "keywordsFound": ["react", "typescript", "git"],
-    "missingKeywords": ["vue", "webpack", "jest"],
-    "sectionsDetected": {
-      "skills": true,
-      "experience": true,
-      "education": true,
-      "projects": true,
-      "certifications": false
-    },
-    "suggestions": [
-      "Add these missing keywords to your Skills section: vue, webpack, jest.",
-      "Quantify your achievements with numbers and percentages."
-    ]
-  }
-}
-```
+### Supported Roles
 
-## Supported Roles
+* Frontend Developer
+* Backend Developer
+* Full Stack Developer
+* Software Engineer
+* Data Analyst
 
-- Frontend Developer
-- Backend Developer
-- Full Stack Developer
-- Software Engineer
-- Data Analyst
+### ATS Scoring System
 
-## Local Development
+The ATS score is calculated using three components:
 
-```bash
-# 1. Install dependencies
-npm install
+| Component        | Weight |
+| ---------------- | ------ |
+| Keyword Match    | 60%    |
+| Resume Structure | 20%    |
+| Content Quality  | 20%    |
 
-# 2. Start development server
-npm run dev
+### Keyword Analysis
 
-# 3. Open in browser
-# http://localhost:3000
-```
+* Detects relevant technical keywords
+* Shows matched keywords
+* Identifies missing keywords
+* Provides role-specific recommendations
 
-## Vercel Deployment
+### Resume Structure Detection
 
-```bash
-# Install Vercel CLI (one-time)
-npm install -g vercel
+Checks for important sections:
 
-# Deploy
-vercel
+* Skills
+* Experience
+* Education
+* Projects
+* Certifications
 
-# Follow prompts — no environment variables required.
-```
+### Content Quality Analysis
 
-The `vercel.json` is pre-configured:
-- `api/analyze.js` → Vercel Node.js serverless function (512 MB, 30s timeout)
-- `public/` → Served as static files via Vercel CDN
+Evaluates:
 
-## File Validation
+* Resume length
+* Action verbs usage
+* Project descriptions
+* Quantified achievements
+* Technology mentions
 
-- **Format:** PDF only (`application/pdf`)
-- **Max size:** 5 MB
-- **Content:** Must be text-based PDF (not scanned/image-only)
+### Additional Features
+
+* Drag-and-drop PDF upload
+* Responsive design
+* Interactive score visualization
+* Detailed improvement suggestions
+* Mobile-friendly interface
+* No signup required
+
+## Screenshots
+
+### Home Page
+
+<img width="1901" height="1030" alt="Screenshot 2026-06-21 131832" src="https://github.com/user-attachments/assets/ce23ffff-e5aa-4f81-b10c-ad7677de2372" />
+
+
+### Analysis Results
+
+<img width="1888" height="1030" alt="Screenshot 2026-06-21 131910" src="https://github.com/user-attachments/assets/0239e82f-a637-4f12-99f4-81bf25674a5d" />
+
 
 ## Tech Stack
 
-- **Runtime:** Node.js 18+
-- **Framework:** Express.js (local dev) / Vercel Serverless (production)
-- **PDF Parsing:** `pdf-parse`
-- **File Upload:** `multer` (memory storage — no disk writes)
-- **Frontend:** Vanilla HTML, CSS, JavaScript
+### Frontend
+
+* HTML5
+* CSS3
+* Vanilla JavaScript
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Libraries
+
+* pdf-parse
+* multer
+* cors
+
+### Deployment
+
+* Vercel
+
+## Project Structure
+
+```text
+ats-resume-analyzer/
+│
+├── api/
+│   └── analyze.js
+│
+├── lib/
+│   ├── atsScorer.js
+│   ├── pdfParser.js
+│   └── keywords.js
+│
+├── public/
+│   ├── index.html
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── app.js
+│
+├── server.js
+├── package.json
+└── README.md
+```
+
+
+## How It Works
+
+1. User uploads a PDF resume.
+2. PDF text is extracted using pdf-parse.
+3. Resume content is analyzed against role-specific keyword databases.
+4. Resume sections are detected.
+5. Content quality is evaluated.
+6. ATS score is generated.
+7. Improvement suggestions are displayed.
+
+## Validation Rules
+
+### Accepted Files
+
+* PDF only
+
+### File Size Limit
+
+* Maximum 5 MB
+
+### PDF Requirements
+
+* Text-based PDFs supported
+* Scanned/image-only PDFs are not supported
+
+## Why I Built This
+
+As a student actively applying for internships, I frequently updated and optimized my resume for different roles. Most ATS analysis tools available online were either paid, required signups, or provided limited feedback.
+
+I built this project to create a simple, free, and accessible tool that helps students and job seekers understand how well their resume aligns with a target role before applying.
+
+## Future Improvements
+
+* Job Description Based Analysis
+* Resume Report Download (PDF)
+* Resume Comparison Mode
+* Custom Keyword Sets
+* ATS Optimization Tips
+* Dark/Light Theme Toggle
+
+## Author
+
+**Ashwit**
+
+GitHub: https://github.com/Ashwit143
+
+## License
+
+This project is licensed under the MIT License.
