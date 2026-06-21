@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Free ATS Resume Analyzer — Upload your PDF resume, select a target role, and get your ATS compatibility score with keyword analysis and actionable tips. No signup required." />
+  <meta name="keywords"
+    content="ATS resume checker, resume score, keyword analyzer, resume optimizer, job application tool" />
+  <title>ATS Resume Analyzer — Free Resume Score Checker</title>
+  <meta property="og:title" content="ATS Resume Analyzer — Free Resume Score Checker" />
+  <meta property="og:description" content="Get your ATS score instantly. 100% free, no signup, no AI APIs." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <!-- Decorative background orbs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">ATS<span class="logo-accent">Score</span></span>
+      </div>
+      <span class="header-tag">Free · Instant · No Signup</span>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="container" id="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">Is Your Resume <span class="gradient-text">ATS-Ready?</span></h1>
+      <p class="hero-sub">
+        Upload your PDF resume, pick a target role, and get an instant ATS compatibility score —
+        powered by keyword matching, section detection, and content quality analysis.
+        100% free. No AI. No data stored.
+      </p>
+      <div class="hero-pills">
+        <span class="pill">📄 PDF Upload</span>
+        <span class="pill">🔍 Keyword Match</span>
+        <span class="pill">📋 Section Detection</span>
+        <span class="pill">✨ Content Quality</span>
+        <span class="pill">💡 Actionable Tips</span>
+      </div>
+    </section>
+
+    <!-- Analyzer card -->
+    <section class="card analyzer-card" aria-label="Resume analyzer">
+
+      <!-- Step 1: Upload -->
+      <div class="step-block">
+        <div class="step-label">
+          <span class="step-num">1</span>
+          Upload Your Resume
+        </div>
+
+        <div id="drop-zone" class="drop-zone" role="button" tabindex="0"
+          aria-label="Upload resume PDF — click or drag and drop">
+          <!-- Default state -->
+          <div class="dz-default" id="dz-default">
+            <div class="dz-icon">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <rect width="44" height="44" rx="11" fill="currentColor" fill-opacity="0.1" />
+                <path d="M22 9v18M22 9l-6 6M22 9l6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+                <path d="M12 31h20M8 35h28" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  opacity="0.45" />
+              </svg>
+            </div>
+            <p class="dz-primary">Drag &amp; drop your resume here</p>
+            <p class="dz-secondary">or <span class="dz-link">click to browse</span> — PDF only, max 5 MB</p>
+          </div>
+
+          <!-- File selected state -->
+          <div class="dz-selected" id="dz-selected" hidden>
+            <span class="dz-file-icon">📄</span>
+            <span class="dz-file-name" id="dz-file-name"></span>
+            <button class="dz-remove" id="dz-remove" type="button" aria-label="Remove file">✕</button>
+          </div>
+        </div>
+
+        <input type="file" id="file-input" accept=".pdf,application/pdf" style="display:none" tabindex="-1" />
+      </div>
+
+      <!-- Step 2: Role -->
+      <div class="step-block">
+        <div class="step-label">
+          <span class="step-num">2</span>
+          Select Target Role
+        </div>
+        <div class="role-grid" role="group" aria-label="Target job role">
+          <button class="role-btn" data-role="frontend-developer" type="button" aria-pressed="false">
+            <span class="role-icon">🖥️</span><span>Frontend Developer</span>
+          </button>
+          <button class="role-btn" data-role="backend-developer" type="button" aria-pressed="false">
+            <span class="role-icon">⚙️</span><span>Backend Developer</span>
+          </button>
+          <button class="role-btn" data-role="full-stack-developer" type="button" aria-pressed="false">
+            <span class="role-icon">🔀</span><span>Full Stack Developer</span>
+          </button>
+          <button class="role-btn" data-role="software-engineer" type="button" aria-pressed="false">
+            <span class="role-icon">💻</span><span>Software Engineer</span>
+          </button>
+          <button class="role-btn" data-role="data-analyst" type="button" aria-pressed="false">
+            <span class="role-icon">📈</span><span>Data Analyst</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Analyze -->
+      <div class="analyze-wrap">
+        <button id="analyze-btn" class="analyze-btn" type="button" disabled>
+          <span class="btn-label">Analyze My Resume</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+        <p class="analyze-note" id="analyze-note">Upload a PDF and select a role to continue.</p>
+      </div>
+
+    </section>
+
+    <!-- Loading overlay -->
+    <div id="loading" class="loading-overlay" role="status" aria-live="polite" aria-label="Analyzing resume" hidden>
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <p class="loading-title">Analyzing Your Resume…</p>
+        <ul class="loading-steps" aria-hidden="true">
+          <li class="ls active" id="ls-1">📄 Extracting text from PDF</li>
+          <li class="ls" id="ls-2">🔍 Matching keywords for your role</li>
+          <li class="ls" id="ls-3">📋 Detecting resume sections</li>
+          <li class="ls" id="ls-4">✨ Analyzing content quality</li>
+          <li class="ls" id="ls-5">📊 Calculating ATS score</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <section id="results" class="results-section" hidden aria-live="polite">
+
+      <div class="results-header">
+        <h2 class="results-title">Your ATS Analysis Results</h2>
+        <button id="reset-btn" class="reset-btn" type="button">↩ Analyze Another</button>
+      </div>
+
+      <!-- Score card -->
+      <div class="card score-card">
+
+        <!-- Ring -->
+        <div class="ring-wrap">
+          <svg class="ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+            <circle class="ring-track" cx="100" cy="100" r="80" />
+            <circle class="ring-fill" id="ring-fill" cx="100" cy="100" r="80" stroke-dasharray="502.65"
+              stroke-dashoffset="502.65" />
+          </svg>
+          <div class="ring-center">
+            <span class="score-num" id="score-num">0</span>
+            <span class="score-denom">/ 100</span>
+          </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="score-info">
+          <div class="grade-badge" id="grade-badge"></div>
+          <p class="score-role">Target: <strong id="score-role-name"></strong></p>
+
+          <!-- Breakdown bars -->
+          <div class="breakdown">
+            <div class="bd-row">
+              <div class="bd-meta">
+                <span class="bd-label">Keyword Match <span class="bd-weight">(60%)</span></span>
+                <span class="bd-val" id="bd-keyword">0%</span>
+              </div>
+              <div class="bd-track">
+                <div class="bd-bar" id="bar-keyword" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="bd-row">
+              <div class="bd-meta">
+                <span class="bd-label">Resume Structure <span class="bd-weight">(20%)</span></span>
+                <span class="bd-val" id="bd-structure">0%</span>
+              </div>
+              <div class="bd-track">
+                <div class="bd-bar" id="bar-structure" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="bd-row">
+              <div class="bd-meta">
+                <span class="bd-label">Content Quality <span class="bd-weight">(20%)</span></span>
+                <span class="bd-val" id="bd-content">0%</span>
+              </div>
+              <div class="bd-track">
+                <div class="bd-bar" id="bar-content" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results grid -->
+      <div class="results-grid">
+
+        <!-- Keywords Found -->
+        <div class="card result-card">
+          <div class="rc-header">
+            <span class="rc-icon">✅</span>
+            <h3 class="rc-title">Keywords Found</h3>
+            <span class="rc-count" id="found-count">0</span>
+          </div>
+          <div class="chips" id="found-chips" role="list"></div>
+        </div>
+
+        <!-- Missing Keywords -->
+        <div class="card result-card">
+          <div class="rc-header">
+            <span class="rc-icon">❌</span>
+            <h3 class="rc-title">Missing Keywords</h3>
+            <span class="rc-count" id="missing-count">0</span>
+          </div>
+          <div class="chips" id="missing-chips" role="list"></div>
+        </div>
+
+        <!-- Sections Detected -->
+        <div class="card result-card">
+          <div class="rc-header">
+            <span class="rc-icon">📋</span>
+            <h3 class="rc-title">Resume Sections</h3>
+          </div>
+          <div class="sections-list" id="sections-list" role="list"></div>
+        </div>
+
+        <!-- Content Quality -->
+        <div class="card result-card">
+          <div class="rc-header">
+            <span class="rc-icon">✨</span>
+            <h3 class="rc-title">Content Quality</h3>
+          </div>
+          <div class="quality-summary" id="quality-summary" role="list"></div>
+        </div>
+
+      </div>
+
+      <!-- Suggestions -->
+      <div class="card suggestions-card">
+        <h3 class="suggestions-title"><span aria-hidden="true">💡</span> Actionable Improvement Tips</h3>
+        <ol class="suggestions-list" id="suggestions-list"></ol>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Error toast -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive" hidden>
+    <span class="toast-icon">⚠️</span>
+    <span id="toast-msg"></span>
+    <button id="toast-close" class="toast-close" type="button" aria-label="Dismiss">✕</button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built by Ashwit -based analysis, no AI APIs, no data stored, completely free.</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
